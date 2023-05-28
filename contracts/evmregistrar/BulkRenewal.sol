@@ -16,8 +16,8 @@ contract BulkRenewal is IBulkRenewal {
 
     EVMNS public immutable ens;
 
-    constructor(EVMNS _ens) {
-        ens = _ens;
+    constructor(EVMNS _evmns) {
+        ens = _evmns;
     }
 
     function getController() internal view returns (EVMRegistrarController) {

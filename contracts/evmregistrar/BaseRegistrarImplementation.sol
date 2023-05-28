@@ -51,8 +51,8 @@ contract BaseRegistrarImplementation is ERC721, IBaseRegistrar, Ownable {
             isApprovedForAll(owner, spender));
     }
 
-    constructor(EVMNS _ens, bytes32 _baseNode) ERC721("", "") {
-        ens = _ens;
+    constructor(EVMNS _evmns, bytes32 _baseNode) ERC721("", "") {
+        ens = _evmns;
         baseNode = _baseNode;
     }
 

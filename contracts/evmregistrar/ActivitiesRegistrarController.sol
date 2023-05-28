@@ -83,10 +83,10 @@ contract ActivitiesRegistrarController is
         uint256 _maxCommitmentAge,
         ReverseRegistrar _reverseRegistrar,
         INameWrapper _nameWrapper,
-        EVMNS _ens,
+        EVMNS _evmns,
         uint160[][] memory _whitelist,
         string[][] memory _limits
-    ) ReverseClaimer(_ens, msg.sender) {
+    ) ReverseClaimer(_evmns, msg.sender) {
         if (_maxCommitmentAge <= _minCommitmentAge) {
             revert MaxCommitmentAgeTooLow();
         }

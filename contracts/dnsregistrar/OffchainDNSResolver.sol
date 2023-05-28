@@ -40,8 +40,8 @@ contract OffchainDNSResolver is IExtendedResolver {
 
     error CouldNotResolve(bytes name);
 
-    constructor(EVMNS _ens, DNSSEC _oracle, string memory _gatewayURL) {
-        ens = _ens;
+    constructor(EVMNS _evmns, DNSSEC _oracle, string memory _gatewayURL) {
+        ens = _evmns;
         oracle = _oracle;
         gatewayURL = _gatewayURL;
     }

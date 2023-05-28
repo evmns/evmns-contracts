@@ -57,14 +57,14 @@ contract DNSRegistrar is IDNSRegistrar, IERC165 {
         address _resolver,
         DNSSEC _dnssec,
         PublicSuffixList _suffixes,
-        EVMNS _ens
+        EVMNS _evmns
     ) {
         previousRegistrar = _previousRegistrar;
         resolver = _resolver;
         oracle = _dnssec;
         suffixes = _suffixes;
         emit NewPublicSuffixList(address(suffixes));
-        ens = _ens;
+        ens = _evmns;
     }
 
     /**

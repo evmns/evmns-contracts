@@ -68,12 +68,12 @@ contract PublicResolver is
     );
 
     constructor(
-        EVMNS _ens,
+        EVMNS _evmns,
         INameWrapper wrapperAddress,
         address _trustedETHController,
         address _trustedReverseRegistrar
-    ) ReverseClaimer(_ens, msg.sender) {
-        ens = _ens;
+    ) ReverseClaimer(_evmns, msg.sender) {
+        ens = _evmns;
         nameWrapper = wrapperAddress;
         trustedETHController = _trustedETHController;
         trustedReverseRegistrar = _trustedReverseRegistrar;

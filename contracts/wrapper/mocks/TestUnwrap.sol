@@ -15,8 +15,8 @@ contract TestUnwrap is Ownable {
     IBaseRegistrar public immutable registrar;
     mapping(address => bool) public approvedWrapper;
 
-    constructor(EVMNS _ens, IBaseRegistrar _registrar) {
-        ens = _ens;
+    constructor(EVMNS _evmns, IBaseRegistrar _registrar) {
+        ens = _evmns;
         registrar = _registrar;
     }
 

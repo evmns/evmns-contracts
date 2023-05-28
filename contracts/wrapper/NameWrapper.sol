@@ -57,11 +57,11 @@ contract NameWrapper is
     uint64 private constant MAX_EXPIRY = type(uint64).max;
 
     constructor(
-        EVMNS _ens,
+        EVMNS _evmns,
         IBaseRegistrar _registrar,
         IMetadataService _metadataService
-    ) ReverseClaimer(_ens, msg.sender) {
-        ens = _ens;
+    ) ReverseClaimer(_evmns, msg.sender) {
+        ens = _evmns;
         registrar = _registrar;
         metadataService = _metadataService;
 

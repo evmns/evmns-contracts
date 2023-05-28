@@ -14,9 +14,9 @@ contract NameGriefer is IERC1155Receiver {
 
     constructor(INameWrapper _wrapper) {
         wrapper = _wrapper;
-        EVMNS _ens = _wrapper.ens();
-        ens = _ens;
-        _ens.setApprovalForAll(address(_wrapper), true);
+        EVMNS _evmns = _wrapper.ens();
+        ens = _evmns;
+        _evmns.setApprovalForAll(address(_wrapper), true);
     }
 
     function destroy(bytes calldata name) public {

@@ -47,7 +47,7 @@ contract('DNSRegistrar', function (accounts) {
     },
     rrs: [
       {
-        name: `_ens.${name}`,
+        name: `_evmns.${name}`,
         type: 'TXT',
         class: 'IN',
         ttl: 3600,

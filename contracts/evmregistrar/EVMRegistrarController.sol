@@ -79,9 +79,9 @@ contract EVMRegistrarController is
         uint256 _maxCommitmentAge,
         ReverseRegistrar _reverseRegistrar,
         INameWrapper _nameWrapper,
-        EVMNS _ens,
+        EVMNS _evmns,
         uint _launchedtime
-    ) ReverseClaimer(_ens, msg.sender) {
+    ) ReverseClaimer(_evmns, msg.sender) {
         if (_maxCommitmentAge <= _minCommitmentAge) {
             revert MaxCommitmentAgeTooLow();
         }

@@ -14,8 +14,8 @@ contract UpgradedNameWrapperMock is INameWrapperUpgrade {
     EVMNS public immutable ens;
     IBaseRegistrar public immutable registrar;
 
-    constructor(EVMNS _ens, IBaseRegistrar _registrar) {
-        ens = _ens;
+    constructor(EVMNS _evmns, IBaseRegistrar _registrar) {
+        ens = _evmns;
         registrar = _registrar;
     }
 
