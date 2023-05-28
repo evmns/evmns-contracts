@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ~0.8.17;
 
-import "../registry/ENS.sol";
+import "../registry/EVMNS.sol";
 import "./EVMRegistrarController.sol";
 import "./IEVMRegistrarController.sol";
 import "../resolvers/Resolver.sol";
@@ -14,9 +14,9 @@ contract BulkRenewal is IBulkRenewal {
     bytes32 private constant ETH_NAMEHASH =
         0x508b635792ccd7149e70e60de9be8731ce05ec4242c91d20e497968774e30bd1;
 
-    ENS public immutable ens;
+    EVMNS public immutable ens;
 
-    constructor(ENS _ens) {
+    constructor(EVMNS _ens) {
         ens = _ens;
     }
 

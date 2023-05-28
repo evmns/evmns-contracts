@@ -1,8 +1,8 @@
 # NameWrapper docs
 
-The NameWrapper wraps ENS names, adding new functionality to them:
+The NameWrapper wraps EVMNS names, adding new functionality to them:
 
-- Makes all ENS names at any level into ERC1155 tokens.
+- Makes all EVMNS names at any level into ERC1155 tokens.
 - Supports 'emancipating' names by allowing the owner of a parent name to revoke control over subdomains.
 - Supports 'locking' names by allowing the owner of a name to revoke control over changes in resolver, creation of subdomains, and other parameters.
 - Wrapped names can expire; a name that is emancipated or locked has a built in expiration at which the name (and that status) expires.
@@ -12,7 +12,7 @@ The NameWrapper wraps ENS names, adding new functionality to them:
 
 ## Glossary of terms
 
-- Wrap - Transfers ownership of the ENS name to the Name Wrapper. The wrapper then issues an ERC1155 token for the name.
+- Wrap - Transfers ownership of the EVMNS name to the Name Wrapper. The wrapper then issues an ERC1155 token for the name.
 - Unwrap - Reverses the wrap process and transfers the name to an address of the token owner's choice.
 - Fuse - The term for a flag that can be set irreversibly until expiry. Fuses can do many things, including controlling permissions for the name itself.
 - Emancipation - The process of the owner of a parent name revoking its control over a subname.
@@ -331,7 +331,7 @@ If the name is Emancipated or Locked, this function may be called to extend the 
 
 ### Setting Records
 
-The NameWrapper mirrors most of the functionality from the original ENS registry in its own API.
+The NameWrapper mirrors most of the functionality from the original EVMNS registry in its own API.
 
 - `setResolver()`
 - `setTTL()`

@@ -1,5 +1,5 @@
 const Root = artifacts.require('./Root.sol')
-const ENS = artifacts.require('@ensdomains/ens/contracts/ENSRegistry.sol')
+const EVMNS = artifacts.require('@ensdomains/ens/contracts/EVMNSRegistry.sol')
 
 const { exceptions, evm } = require('@ensdomains/test-utils')
 const namehash = require('eth-ens-namehash')
@@ -14,7 +14,7 @@ contract('Root', function (accounts) {
   beforeEach(async function () {
     node = namehash.hash('evm')
 
-    ens = await ENS.new()
+    ens = await EVMNS.new()
     root = await Root.new(ens.address)
 
     await root.setController(accounts[0], true)

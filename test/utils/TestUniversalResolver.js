@@ -16,7 +16,7 @@ const EMPTY_BYTES32 =
   '0x0000000000000000000000000000000000000000000000000000000000000000'
 
 contract('UniversalResolver', function (accounts) {
-  let ENSRegistry,
+  let EVMNSRegistry,
     PublicResolver,
     NameWrapper,
     UniversalResolver,
@@ -38,7 +38,7 @@ contract('UniversalResolver', function (accounts) {
   before(async () => {
     batchGateway = (await ethers.getContractAt('BatchGateway', ZERO_ADDRESS))
       .interface
-    ENSRegistry = await ethers.getContractFactory('ENSRegistry')
+    EVMNSRegistry = await ethers.getContractFactory('EVMNSRegistry')
     PublicResolver = await ethers.getContractFactory('PublicResolver')
     NameWrapper = await ethers.getContractFactory('DummyNameWrapper')
     UniversalResolver = await ethers.getContractFactory('UniversalResolver')
@@ -51,7 +51,7 @@ contract('UniversalResolver', function (accounts) {
 
   beforeEach(async () => {
     node = namehash.hash('evm')
-    ens = await deploy('ENSRegistry')
+    ens = await deploy('EVMNSRegistry')
     nameWrapper = await deploy('DummyNameWrapper')
     reverseRegistrar = await deploy('ReverseRegistrar', ens.address)
     reverseNode = accounts[0].toLowerCase().substring(2) + '.addr.reverse'

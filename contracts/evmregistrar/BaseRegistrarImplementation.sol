@@ -1,6 +1,6 @@
 pragma solidity >=0.8.4;
 
-import "../registry/ENS.sol";
+import "../registry/EVMNS.sol";
 import "./IBaseRegistrar.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -8,8 +8,8 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract BaseRegistrarImplementation is ERC721, IBaseRegistrar, Ownable {
     // A map of expiry times
     mapping(uint256 => uint256) expiries;
-    // The ENS registry
-    ENS public ens;
+    // The EVMNS registry
+    EVMNS public ens;
     // The namehash of the TLD this registrar owns (eg, .eth)
     bytes32 public baseNode;
     // A map of addresses that are authorised to register and renew names.
@@ -51,7 +51,7 @@ contract BaseRegistrarImplementation is ERC721, IBaseRegistrar, Ownable {
             isApprovedForAll(owner, spender));
     }
 
-    constructor(ENS _ens, bytes32 _baseNode) ERC721("", "") {
+    constructor(EVMNS _ens, bytes32 _baseNode) ERC721("", "") {
         ens = _ens;
         baseNode = _baseNode;
     }
@@ -177,7 +177,7 @@ contract BaseRegistrarImplementation is ERC721, IBaseRegistrar, Ownable {
     }
 
     /**
-     * @dev Reclaim ownership of a name in ENS, if you own it in the registrar.
+     * @dev Reclaim ownership of a name in EVMNS, if you own it in the registrar.
      */
     function reclaim(uint256 id, address owner) external override live {
         require(_isApprovedOrOwner(msg.sender, id));

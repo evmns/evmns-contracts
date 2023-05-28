@@ -1,4 +1,4 @@
-const ENS = artifacts.require('./registry/ENSRegistry')
+const EVMNS = artifacts.require('./registry/EVMNSRegistry')
 const PublicResolver = artifacts.require('./resolvers/PublicResolver')
 const BaseRegistrar = artifacts.require('./BaseRegistrarImplementation')
 const EVMRegistrarController = artifacts.require('./EVMRegistrarController')
@@ -33,7 +33,7 @@ contract('BulkRenewal', function (accounts) {
 
   before(async () => {
     // Create a registry
-    ens = await ENS.new()
+    ens = await EVMNS.new()
     // Create a base registrar
     baseRegistrar = await BaseRegistrar.new(ens.address, namehash.hash('evm'), {
       from: ownerAccount,

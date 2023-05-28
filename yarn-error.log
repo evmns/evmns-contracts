@@ -30,7 +30,7 @@ npm manifest:
   {
     "name": "@ensdomains/ens-contracts",
     "version": "0.0.20",
-    "description": "ENS contracts",
+    "description": "EVMNS contracts",
     "scripts": {
       "test": "hardhat test",
       "test:local": "hardhat --network localhost test",
@@ -5689,7 +5689,7 @@ Lockfile:
   htmlparser2@^8.0.1:
     version "8.0.1"
     resolved "https://registry.npmjs.org/htmlparser2/-/htmlparser2-8.0.1.tgz"
-    integrity sha512-4lVbmc1diZC7GUJQtRQ5yBAeUCL1exyMwmForWkRLnwyzWBFxN633SALPMGYaWZvKe9j1pRZJpauvmxENSp/EA==
+    integrity sha512-4lVbmc1diZC7GUJQtRQ5yBAeUCL1exyMwmForWkRLnwyzWBFxN633SALPMGYaWZvKe9j1pRZJpauvmxEVMNSp/EA==
     dependencies:
       domelementtype "^2.3.0"
       domhandler "^5.0.2"

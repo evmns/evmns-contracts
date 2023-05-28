@@ -7,7 +7,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deploy } = deployments
   const { deployer, owner } = await getNamedAccounts()
 
-  const registry = await hre.deployments.get('ENSRegistry')
+  const registry = await hre.deployments.get('EVMNSRegistry')
   const dnssec = await hre.deployments.get('DNSSECImpl')
   const resolver = await hre.deployments.get('OffchainDNSResolver')
   const oldregistrar = await hre.deployments.getOrNull('DNSRegistrar')

@@ -1,18 +1,18 @@
 pragma solidity >=0.8.4;
 
-import "./ENS.sol";
-import "./ENSRegistry.sol";
+import "./EVMNS.sol";
+import "./EVMNSRegistry.sol";
 
 /**
- * The ENS registry contract.
+ * The EVMNS registry contract.
  */
-contract ENSRegistryWithFallback is ENSRegistry {
-    ENS public old;
+contract EVMNSRegistryWithFallback is EVMNSRegistry {
+    EVMNS public old;
 
     /**
-     * @dev Constructs a new ENS registrar.
+     * @dev Constructs a new EVMNS registrar.
      */
-    constructor(ENS _old) public ENSRegistry() {
+    constructor(EVMNS _old) public EVMNSRegistry() {
         old = _old;
     }
 

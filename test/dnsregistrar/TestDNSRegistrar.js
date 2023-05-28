@@ -1,4 +1,4 @@
-const ENSRegistry = artifacts.require('./ENSRegistry.sol')
+const EVMNSRegistry = artifacts.require('./EVMNSRegistry.sol')
 const Root = artifacts.require('/Root.sol')
 const SimplePublixSuffixList = artifacts.require('./SimplePublicSuffixList.sol')
 const DNSRegistrarContract = artifacts.require('./DNSRegistrar.sol')
@@ -57,7 +57,7 @@ contract('DNSRegistrar', function (accounts) {
   })
 
   beforeEach(async function () {
-    ens = await ENSRegistry.new()
+    ens = await EVMNSRegistry.new()
     const ReverseRegistrar = await deploy('ReverseRegistrar', ens.address)
     await ens.setSubnodeOwner(EMPTY_BYTES32, labelhash('reverse'), accounts[0])
     await ens.setSubnodeOwner(
@@ -87,7 +87,7 @@ contract('DNSRegistrar', function (accounts) {
     await root.setController(registrar.address, true)
   })
 
-  it('allows anyone to claim on behalf of the owner of an ENS name', async function () {
+  it('allows anyone to claim on behalf of the owner of an EVMNS name', async function () {
     assert.equal(await registrar.oracle(), dnssec.address)
     assert.equal(await registrar.ens(), ens.address)
 

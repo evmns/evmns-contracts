@@ -6,7 +6,7 @@ import {Controllable} from "./Controllable.sol";
 import {INameWrapper, CANNOT_UNWRAP, CANNOT_BURN_FUSES, CANNOT_TRANSFER, CANNOT_SET_RESOLVER, CANNOT_SET_TTL, CANNOT_CREATE_SUBDOMAIN, CANNOT_APPROVE, PARENT_CANNOT_CONTROL, CAN_DO_EVERYTHING, IS_DOT_ETH, CAN_EXTEND_EXPIRY, PARENT_CONTROLLED_FUSES, USER_SETTABLE_FUSES} from "./INameWrapper.sol";
 import {INameWrapperUpgrade} from "./INameWrapperUpgrade.sol";
 import {IMetadataService} from "./IMetadataService.sol";
-import {ENS} from "../registry/ENS.sol";
+import {EVMNS} from "../registry/EVMNS.sol";
 import {IReverseRegistrar} from "../reverseRegistrar/IReverseRegistrar.sol";
 import {ReverseClaimer} from "../reverseRegistrar/ReverseClaimer.sol";
 import {IBaseRegistrar} from "../evmregistrar/IBaseRegistrar.sol";
@@ -39,7 +39,7 @@ contract NameWrapper is
 {
     using BytesUtils for bytes;
 
-    ENS public immutable ens;
+    EVMNS public immutable ens;
     IBaseRegistrar public immutable registrar;
     IMetadataService public metadataService;
     mapping(bytes32 => bytes) public names;
@@ -57,7 +57,7 @@ contract NameWrapper is
     uint64 private constant MAX_EXPIRY = type(uint64).max;
 
     constructor(
-        ENS _ens,
+        EVMNS _ens,
         IBaseRegistrar _registrar,
         IMetadataService _metadataService
     ) ReverseClaimer(_ens, msg.sender) {
@@ -317,7 +317,7 @@ contract NameWrapper is
      * @param label The label to register (Eg, 'foo' for 'foo.eth').
      * @param wrappedOwner The owner of the wrapped name.
      * @param duration The duration, in seconds, to register the name for.
-     * @param resolver The resolver address to set on the ENS registry (optional).
+     * @param resolver The resolver address to set on the EVMNS registry (optional).
      * @param ownerControlledFuses Initial owner-controlled fuses to set
      * @return registrarExpiry The expiry date of the new name on the .eth registrar, in seconds since the Unix epoch.
      */
@@ -696,7 +696,7 @@ contract NameWrapper is
     }
 
     /**
-     * @notice Sets records for the name in the ENS Registry
+     * @notice Sets records for the name in the EVMNS Registry
      * @param node Namehash of the name to set a record for
      * @param owner New owner in the registry
      * @param resolver Resolver contract

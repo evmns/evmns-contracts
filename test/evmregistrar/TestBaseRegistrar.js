@@ -1,4 +1,4 @@
-const ENS = artifacts.require('./registry/ENSRegistry')
+const EVMNS = artifacts.require('./registry/EVMNSRegistry')
 const BaseRegistrar = artifacts.require(
   './registrar/BaseRegistrarImplementation',
 )
@@ -23,7 +23,7 @@ contract('BaseRegistrar', function (accounts) {
   let registrar
 
   before(async () => {
-    ens = await ENS.new()
+    ens = await EVMNS.new()
 
     registrar = await BaseRegistrar.new(ens.address, namehash.hash('evm'), {
       from: ownerAccount,
@@ -139,7 +139,7 @@ contract('BaseRegistrar', function (accounts) {
       { from: registrantAccount },
     )
     assert.equal(await registrar.ownerOf(sha3('newname')), otherAccount)
-    // Transfer does not update ENS without a call to reclaim.
+    // Transfer does not update EVMNS without a call to reclaim.
     assert.equal(
       await ens.owner(namehash.hash('newname.evm')),
       registrantAccount,

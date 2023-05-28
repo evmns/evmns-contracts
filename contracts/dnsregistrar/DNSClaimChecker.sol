@@ -23,7 +23,7 @@ library DNSClaimChecker {
         // Add "_ens." to the front of the name.
         Buffer.buffer memory buf;
         buf.init(name.length + 5);
-        buf.append("\x04_ens");
+        buf.append("\x04_evm");
         buf.append(name);
 
         for (

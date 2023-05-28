@@ -4,7 +4,7 @@ const { ethers } = require('hardhat')
 const sha3 = require('web3-utils').sha3
 const toBN = require('web3-utils').toBN
 
-const ENS = artifacts.require('./registry/ENSRegistry')
+const EVMNS = artifacts.require('./registry/EVMNSRegistry')
 const BaseRegistrar = artifacts.require('./BaseRegistrarImplementation')
 const DummyOracle = artifacts.require('./DummyOracle')
 const ExponentialPremiumPriceOracle = artifacts.require(
@@ -27,7 +27,7 @@ contract('ExponentialPricePremiumOracle', function (accounts) {
 
   before(async () => {
     const signers = await ethers.getSigners()
-    ens = await ENS.new()
+    ens = await EVMNS.new()
     registrar = await BaseRegistrar.new(ens.address, namehash.hash('evm'))
     await ens.setSubnodeOwner('0x0', sha3('evm'), registrar.address)
     await registrar.addController(accounts[0])

@@ -1,17 +1,17 @@
 const namehash = require('eth-ens-namehash')
 const sha3 = require('web3-utils').sha3
 
-const ENS = artifacts.require('ENSRegistryWithFallback.sol')
+const EVMNS = artifacts.require('EVMNSRegistryWithFallback.sol')
 
-const ENSWithoutFallback = artifacts.require('./registry/ENSRegistry.sol')
+const EVMNSWithoutFallback = artifacts.require('./registry/EVMNSRegistry.sol')
 
-contract('ENSRegistryWithFallback', function (accounts) {
+contract('EVMNSRegistryWithFallback', function (accounts) {
   let old
   let ens
 
   beforeEach(async () => {
-    old = await ENSWithoutFallback.new()
-    ens = await ENS.new(old.address)
+    old = await EVMNSWithoutFallback.new()
+    ens = await EVMNS.new(old.address)
   })
 
   it('should allow setting the record', async () => {

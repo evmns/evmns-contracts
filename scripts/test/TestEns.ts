@@ -10,7 +10,7 @@ async function main() {
   const { deployer } = await getNamedAccounts()
   // 为了调试合约，您需要在这里创建或获取合约实例
   // 例如，您可以使用 ethers.js 的 ContractFactory：
-  const ENSRegistry = await ethers.getContract('ENSRegistry', deployer)
+  const EVMNSRegistry = await ethers.getContract('EVMNSRegistry', deployer)
   const DummyOracle = await ethers.getContract('DummyOracle', deployer)
   var NameWrapper = await ethers.getContract('NameWrapper', deployer)
   const EVMRegistrarController = await ethers.getContract(
@@ -22,7 +22,7 @@ async function main() {
   var name = label + '.evm'
   const labels = name.split('.')
   console.log('lastestPrice:' + (await DummyOracle.latestAnswer()))
-  console.log(name + '_owner:' + (await ENSRegistry.owner(namehash(name))))
+  console.log(name + '_owner:' + (await EVMNSRegistry.owner(namehash(name))))
   console.log(name + '_ownerOf:' + (await NameWrapper.ownerOf(namehash(name))))
   var resdata = await NameWrapper.getData(namehash(name))
   console.log(name + '_nameData:' + resdata)
@@ -55,7 +55,7 @@ async function main() {
   console.log(name + '_expireDate:' + formattedDate)
   /*var tx = await NameWrapper.unwrap(bytes32 parentNode,bytes32 labelhash,address controller
 
-  var tx = await ENSRegistry.setOwner(namehash(name),deployer,{gasLimit:50000});
+  var tx = await EVMNSRegistry.setOwner(namehash(name),deployer,{gasLimit:50000});
   console.log(tx.blockHash)*/
 }
 

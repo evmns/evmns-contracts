@@ -1,4 +1,4 @@
-const ENS = artifacts.require('./registry/ENSRegistry.sol')
+const EVMNS = artifacts.require('./registry/EVMNSRegistry.sol')
 const PublicResolver = artifacts.require('PublicResolver.sol')
 const NameWrapper = artifacts.require('DummyNameWrapper.sol')
 const { deploy } = require('../test-utils/contracts')
@@ -25,7 +25,7 @@ contract('PublicResolver', function (accounts) {
     signers = await ethers.getSigners()
     account = await signers[0].getAddress()
     node = namehash.hash('evm')
-    ens = await ENS.new()
+    ens = await EVMNS.new()
     nameWrapper = await NameWrapper.new()
 
     //setup reverse registrar
@@ -1063,7 +1063,7 @@ contract('PublicResolver', function (accounts) {
     })
 
     it('returns 0 on fallback when target contract does not support implementsInterface', async () => {
-      // Set addr to the ENS registry, which doesn't implement supportsInterface.
+      // Set addr to the EVMNS registry, which doesn't implement supportsInterface.
       await resolver.methods['setAddr(bytes32,address)'](node, ens.address, {
         from: accounts[0],
       })

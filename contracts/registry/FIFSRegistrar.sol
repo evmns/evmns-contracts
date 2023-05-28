@@ -1,12 +1,12 @@
 pragma solidity >=0.8.4;
 
-import "./ENS.sol";
+import "./EVMNS.sol";
 
 /**
  * A registrar that allocates subdomains to the first person to claim them.
  */
 contract FIFSRegistrar {
-    ENS ens;
+    EVMNS ens;
     bytes32 rootNode;
 
     modifier only_owner(bytes32 label) {
@@ -19,10 +19,10 @@ contract FIFSRegistrar {
 
     /**
      * Constructor.
-     * @param ensAddr The address of the ENS registry.
+     * @param ensAddr The address of the EVMNS registry.
      * @param node The node that this registrar administers.
      */
-    constructor(ENS ensAddr, bytes32 node) public {
+    constructor(EVMNS ensAddr, bytes32 node) public {
         ens = ensAddr;
         rootNode = node;
     }

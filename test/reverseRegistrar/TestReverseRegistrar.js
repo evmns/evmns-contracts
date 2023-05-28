@@ -2,7 +2,7 @@ const namehash = require('eth-ens-namehash')
 const sha3 = require('web3-utils').sha3
 const PublicResolver = artifacts.require('./resolvers/PublicResolver.sol')
 const ReverseRegistrar = artifacts.require('./registry/ReverseRegistrar.sol')
-const ENS = artifacts.require('./registry/ENSRegistry.sol')
+const EVMNS = artifacts.require('./registry/EVMNSRegistry.sol')
 const NameWrapper = artifacts.require('DummyNameWrapper.sol')
 const { ethers } = require('hardhat')
 const {
@@ -28,7 +28,7 @@ contract('ReverseRegistrar', function (accounts) {
     node = getReverseNode(accounts[0])
     node2 = getReverseNode(accounts[1])
     node3 = getReverseNode(accounts[2])
-    ens = await ENS.new()
+    ens = await EVMNS.new()
     nameWrapper = await NameWrapper.new()
 
     registrar = await ReverseRegistrar.new(ens.address)

@@ -1,5 +1,5 @@
 const TestRegistrar = artifacts.require('./registry/TestRegistrar.sol')
-const ENS = artifacts.require('./registry/ENSRegistry.sol')
+const EVMNS = artifacts.require('./registry/EVMNSRegistry.sol')
 
 const { exceptions, evm } = require('../test-utils')
 const namehash = require('eth-ens-namehash')
@@ -12,7 +12,7 @@ contract('TestRegistrar', function (accounts) {
   beforeEach(async () => {
     node = namehash.hash('evm')
 
-    ens = await ENS.new()
+    ens = await EVMNS.new()
     registrar = await TestRegistrar.new(ens.address, '0x0')
 
     await ens.setOwner('0x0', registrar.address, { from: accounts[0] })

@@ -1,6 +1,6 @@
 pragma solidity >=0.8.4;
 
-import "../registry/ENS.sol";
+import "../registry/EVMNS.sol";
 import "./IReverseRegistrar.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "../root/Controllable.sol";
@@ -16,7 +16,7 @@ bytes32 constant ADDR_REVERSE_NODE = 0x91d1777781884d03a6757a803996e38de2a42967f
 // namehash('addr.reverse')
 
 contract ReverseRegistrar is Ownable, Controllable, IReverseRegistrar {
-    ENS public immutable ens;
+    EVMNS public immutable ens;
     NameResolver public defaultResolver;
 
     event ReverseClaimed(address indexed addr, bytes32 indexed node);
@@ -24,9 +24,9 @@ contract ReverseRegistrar is Ownable, Controllable, IReverseRegistrar {
 
     /**
      * @dev Constructor
-     * @param ensAddr The address of the ENS registry.
+     * @param ensAddr The address of the EVMNS registry.
      */
-    constructor(ENS ensAddr) {
+    constructor(EVMNS ensAddr) {
         ens = ensAddr;
 
         // Assign ownership of the reverse record to our deployer
@@ -59,22 +59,22 @@ contract ReverseRegistrar is Ownable, Controllable, IReverseRegistrar {
     }
 
     /**
-     * @dev Transfers ownership of the reverse ENS record associated with the
+     * @dev Transfers ownership of the reverse EVMNS record associated with the
      *      calling account.
-     * @param owner The address to set as the owner of the reverse record in ENS.
-     * @return The ENS node hash of the reverse record.
+     * @param owner The address to set as the owner of the reverse record in EVMNS.
+     * @return The EVMNS node hash of the reverse record.
      */
     function claim(address owner) public override returns (bytes32) {
         return claimForAddr(msg.sender, owner, address(defaultResolver));
     }
 
     /**
-     * @dev Transfers ownership of the reverse ENS record associated with the
+     * @dev Transfers ownership of the reverse EVMNS record associated with the
      *      calling account.
      * @param addr The reverse record to set
-     * @param owner The address to set as the owner of the reverse record in ENS.
+     * @param owner The address to set as the owner of the reverse record in EVMNS.
      * @param resolver The resolver of the reverse node
-     * @return The ENS node hash of the reverse record.
+     * @return The EVMNS node hash of the reverse record.
      */
     function claimForAddr(
         address addr,
@@ -91,11 +91,11 @@ contract ReverseRegistrar is Ownable, Controllable, IReverseRegistrar {
     }
 
     /**
-     * @dev Transfers ownership of the reverse ENS record associated with the
+     * @dev Transfers ownership of the reverse EVMNS record associated with the
      *      calling account.
-     * @param owner The address to set as the owner of the reverse record in ENS.
+     * @param owner The address to set as the owner of the reverse record in EVMNS.
      * @param resolver The address of the resolver to set; 0 to leave unchanged.
-     * @return The ENS node hash of the reverse record.
+     * @return The EVMNS node hash of the reverse record.
      */
     function claimWithResolver(
         address owner,
@@ -105,11 +105,11 @@ contract ReverseRegistrar is Ownable, Controllable, IReverseRegistrar {
     }
 
     /**
-     * @dev Sets the `name()` record for the reverse ENS record associated with
+     * @dev Sets the `name()` record for the reverse EVMNS record associated with
      * the calling account. First updates the resolver to the default reverse
      * resolver if necessary.
      * @param name The name to set for this address.
-     * @return The ENS node hash of the reverse record.
+     * @return The EVMNS node hash of the reverse record.
      */
     function setName(string memory name) public override returns (bytes32) {
         return
@@ -122,14 +122,14 @@ contract ReverseRegistrar is Ownable, Controllable, IReverseRegistrar {
     }
 
     /**
-     * @dev Sets the `name()` record for the reverse ENS record associated with
+     * @dev Sets the `name()` record for the reverse EVMNS record associated with
      * the account provided. Updates the resolver to a designated resolver
      * Only callable by controllers and authorised users
      * @param addr The reverse record to set
      * @param owner The owner of the reverse node
      * @param resolver The resolver of the reverse node
      * @param name The name to set for this address.
-     * @return The ENS node hash of the reverse record.
+     * @return The EVMNS node hash of the reverse record.
      */
     function setNameForAddr(
         address addr,
@@ -145,7 +145,7 @@ contract ReverseRegistrar is Ownable, Controllable, IReverseRegistrar {
     /**
      * @dev Returns the node hash for a given account's reverse records.
      * @param addr The address to hash
-     * @return The ENS node hash.
+     * @return The EVMNS node hash.
      */
     function node(address addr) public pure override returns (bytes32) {
         return

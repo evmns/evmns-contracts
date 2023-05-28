@@ -1,7 +1,7 @@
 {
   "name": "@ensdomains/ens-contracts",
   "version": "0.0.20",
-  "description": "ENS contracts",
+  "description": "EVMNS contracts",
   "scripts": {
     "test": "hardhat test",
     "test:local": "hardhat --network localhost test",

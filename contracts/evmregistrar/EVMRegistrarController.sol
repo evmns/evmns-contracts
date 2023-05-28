@@ -4,7 +4,7 @@ pragma solidity ~0.8.17;
 import {BaseRegistrarImplementation} from "./BaseRegistrarImplementation.sol";
 import {StringUtils} from "./StringUtils.sol";
 import {Resolver} from "../resolvers/Resolver.sol";
-import {ENS} from "../registry/ENS.sol";
+import {EVMNS} from "../registry/EVMNS.sol";
 import {ReverseRegistrar} from "../reverseRegistrar/ReverseRegistrar.sol";
 import {ReverseClaimer} from "../reverseRegistrar/ReverseClaimer.sol";
 import {IEVMRegistrarController, IPriceOracle} from "./IEVMRegistrarController.sol";
@@ -79,7 +79,7 @@ contract EVMRegistrarController is
         uint256 _maxCommitmentAge,
         ReverseRegistrar _reverseRegistrar,
         INameWrapper _nameWrapper,
-        ENS _ens,
+        EVMNS _ens,
         uint _launchedtime
     ) ReverseClaimer(_ens, msg.sender) {
         if (_maxCommitmentAge <= _minCommitmentAge) {

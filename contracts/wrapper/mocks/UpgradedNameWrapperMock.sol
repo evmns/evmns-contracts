@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 import {INameWrapperUpgrade} from "../INameWrapperUpgrade.sol";
-import "../../registry/ENS.sol";
+import "../../registry/EVMNS.sol";
 import "../../evmregistrar/IBaseRegistrar.sol";
 import {BytesUtils} from "../BytesUtils.sol";
 
@@ -11,10 +11,10 @@ contract UpgradedNameWrapperMock is INameWrapperUpgrade {
     bytes32 private constant ETH_NODE =
         0x508b635792ccd7149e70e60de9be8731ce05ec4242c91d20e497968774e30bd1;
 
-    ENS public immutable ens;
+    EVMNS public immutable ens;
     IBaseRegistrar public immutable registrar;
 
-    constructor(ENS _ens, IBaseRegistrar _registrar) {
+    constructor(EVMNS _ens, IBaseRegistrar _registrar) {
         ens = _ens;
         registrar = _registrar;
     }

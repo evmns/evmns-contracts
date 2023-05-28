@@ -30,7 +30,7 @@ describe('TestUnwrap', () => {
     account2 = await signers[1].getAddress()
     hacker = await signers[2].getAddress()
 
-    EnsRegistry = await deploy('ENSRegistry')
+    EnsRegistry = await deploy('EVMNSRegistry')
 
     BaseRegistrar = await deploy(
       'BaseRegistrarImplementation',

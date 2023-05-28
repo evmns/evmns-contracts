@@ -1,5 +1,5 @@
 const FIFSRegistrar = artifacts.require('./evmregistrar/FIFSRegistrar.sol')
-const ENS = artifacts.require('./registry/ENSRegistry.sol')
+const EVMNS = artifacts.require('./registry/EVMNSRegistry.sol')
 
 const { exceptions } = require('../test-utils')
 const sha3 = require('web3-utils').sha3
@@ -9,7 +9,7 @@ contract('FIFSRegistrar', function (accounts) {
   let registrar, ens
 
   beforeEach(async () => {
-    ens = await ENS.new()
+    ens = await EVMNS.new()
     registrar = await FIFSRegistrar.new(ens.address, '0x0')
 
     await ens.setOwner('0x0', registrar.address, { from: accounts[0] })

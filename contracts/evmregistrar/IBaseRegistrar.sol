@@ -1,4 +1,4 @@
-import "../registry/ENS.sol";
+import "../registry/EVMNS.sol";
 import "./IBaseRegistrar.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
@@ -44,7 +44,7 @@ interface IBaseRegistrar is IERC721 {
     function renew(uint256 id, uint256 duration) external returns (uint256);
 
     /**
-     * @dev Reclaim ownership of a name in ENS, if you own it in the registrar.
+     * @dev Reclaim ownership of a name in EVMNS, if you own it in the registrar.
      */
     function reclaim(uint256 id, address owner) external;
 }

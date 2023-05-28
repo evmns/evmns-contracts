@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: MIT
 pragma solidity >=0.8.17 <0.9.0;
 
-import "../registry/ENS.sol";
+import "../registry/EVMNS.sol";
 import "./profiles/ABIResolver.sol";
 import "./profiles/AddrResolver.sol";
 import "./profiles/ContentHashResolver.sol";
@@ -30,7 +30,7 @@ contract PublicResolver is
     TextResolver,
     ReverseClaimer
 {
-    ENS immutable ens;
+    EVMNS immutable ens;
     INameWrapper immutable nameWrapper;
     address immutable trustedETHController;
     address immutable trustedReverseRegistrar;
@@ -68,7 +68,7 @@ contract PublicResolver is
     );
 
     constructor(
-        ENS _ens,
+        EVMNS _ens,
         INameWrapper wrapperAddress,
         address _trustedETHController,
         address _trustedReverseRegistrar

@@ -7,7 +7,7 @@ import "@ensdomains/buffer/contracts/Buffer.sol";
 import "../dnssec-oracle/BytesUtils.sol";
 import "../dnssec-oracle/DNSSEC.sol";
 import "../dnssec-oracle/RRUtils.sol";
-import "../registry/ENSRegistry.sol";
+import "../registry/EVMNSRegistry.sol";
 import "../root/Root.sol";
 import "../resolvers/profiles/AddrResolver.sol";
 import "./DNSClaimChecker.sol";
@@ -15,15 +15,15 @@ import "./PublicSuffixList.sol";
 import "./IDNSRegistrar.sol";
 
 /**
- * @dev An ENS registrar that allows the owner of a DNS name to claim the
- *      corresponding name in ENS.
+ * @dev An EVMNS registrar that allows the owner of a DNS name to claim the
+ *      corresponding name in EVMNS.
  */
 contract DNSRegistrar is IDNSRegistrar, IERC165 {
     using BytesUtils for bytes;
     using Buffer for Buffer.buffer;
     using RRUtils for *;
 
-    ENS public immutable ens;
+    EVMNS public immutable ens;
     DNSSEC public immutable oracle;
     PublicSuffixList public suffixes;
     address public immutable previousRegistrar;
@@ -57,7 +57,7 @@ contract DNSRegistrar is IDNSRegistrar, IERC165 {
         address _resolver,
         DNSSEC _dnssec,
         PublicSuffixList _suffixes,
-        ENS _ens
+        EVMNS _ens
     ) {
         previousRegistrar = _previousRegistrar;
         resolver = _resolver;
@@ -68,7 +68,7 @@ contract DNSRegistrar is IDNSRegistrar, IERC165 {
     }
 
     /**
-     * @dev This contract's owner-only functions can be invoked by the owner of the ENS root.
+     * @dev This contract's owner-only functions can be invoked by the owner of the EVMNS root.
      */
     modifier onlyOwner() {
         Root root = Root(ens.owner(bytes32(0)));

@@ -43,9 +43,9 @@ const {
 } = FUSES
 
 describe('Name Wrapper', () => {
-  let ENSRegistry
-  let ENSRegistry2
-  let ENSRegistryH
+  let EVMNSRegistry
+  let EVMNSRegistry2
+  let EVMNSRegistryH
   let BaseRegistrar
   let BaseRegistrar2
   let BaseRegistrarH
@@ -86,7 +86,7 @@ describe('Name Wrapper', () => {
     account3 = await signers[2].getAddress()
     hacker = account3
 
-    EnsRegistry = await deploy('ENSRegistry')
+    EnsRegistry = await deploy('EVMNSRegistry')
     EnsRegistry2 = EnsRegistry.connect(signers[1])
     EnsRegistryH = EnsRegistry.connect(signers[2])
 
@@ -246,7 +246,7 @@ describe('Name Wrapper', () => {
         .withArgs(account, EMPTY_ADDRESS, account, namehash('xyz'), 1)
     })
 
-    it('Cannot wrap a name if the owner has not authorised the wrapper with the ENS registry.', async () => {
+    it('Cannot wrap a name if the owner has not authorised the wrapper with the EVMNS registry.', async () => {
       await expect(NameWrapper.wrap(encodeName('xyz'), account, EMPTY_ADDRESS))
         .to.be.reverted
     })
@@ -267,7 +267,7 @@ describe('Name Wrapper', () => {
       )
     })
 
-    it('Allows an account approved by the owner on the ENS registry to wrap a name.', async () => {
+    it('Allows an account approved by the owner on the EVMNS registry to wrap a name.', async () => {
       const labelHash = labelhash('abc')
 
       // setup .abc with account2 as owner
@@ -284,7 +284,7 @@ describe('Name Wrapper', () => {
       expect(ownerOfWrappedXYZ).to.equal(account2)
     })
 
-    it('Does not allow anyone else to wrap a name even if the owner has authorised the wrapper with the ENS registry.', async () => {
+    it('Does not allow anyone else to wrap a name even if the owner has authorised the wrapper with the EVMNS registry.', async () => {
       const labelHash = labelhash('abc')
 
       // setup .abc with account2 as owner
@@ -436,7 +436,7 @@ describe('Name Wrapper', () => {
       expect(ownerOfWrappedXYZ).to.equal(account)
       await NameWrapper.unwrap(namehash('xyz'), labelhash('unwrapped'), account)
 
-      //Transfers ownership in the ENS registry to the target address.
+      //Transfers ownership in the EVMNS registry to the target address.
       expect(await EnsRegistry.owner(namehash('unwrapped.xyz'))).to.equal(
         account,
       )
@@ -513,7 +513,7 @@ describe('Name Wrapper', () => {
       expect(await NameWrapper.ownerOf(namehash('abc'))).to.equal(EMPTY_ADDRESS)
     })
 
-    it('Does not allow an account authorised by the owner on the ENS registry to unwrap a name', async () => {
+    it('Does not allow an account authorised by the owner on the EVMNS registry to unwrap a name', async () => {
       const labelHash = labelhash('abc')
 
       // setup .abc with account2 as owner
@@ -1084,7 +1084,7 @@ describe('Name Wrapper', () => {
       expect(await NameWrapper.ownerOf(nameHash)).to.equal(account)
     })
 
-    it('Does not allow anyone else to wrap a name even if the owner has authorised the wrapper with the ENS registry.', async () => {
+    it('Does not allow anyone else to wrap a name even if the owner has authorised the wrapper with the EVMNS registry.', async () => {
       await BaseRegistrar.register(labelHash, account, 1 * DAY)
 
       await EnsRegistry.setApprovalForAll(NameWrapper.address, true)
@@ -1297,7 +1297,7 @@ describe('Name Wrapper', () => {
         .to.emit(NameWrapper, 'TransferSingle')
         .withArgs(account, account, EMPTY_ADDRESS, nameHash, 1)
     })
-    it('Does not allows an account authorised by the owner on the ENS registrar to unwrap a name', async () => {
+    it('Does not allows an account authorised by the owner on the EVMNS registrar to unwrap a name', async () => {
       await BaseRegistrar.register(labelHash, account, 1 * DAY)
       await BaseRegistrar.setApprovalForAll(NameWrapper.address, true)
       await BaseRegistrar.setApprovalForAll(account2, true)
@@ -1312,7 +1312,7 @@ describe('Name Wrapper', () => {
       ).to.be.revertedWith(`Unauthorised("${nameHash}", "${account2}")`)
     })
 
-    it('Does not allow anyone else to unwrap a name even if the owner has authorised the wrapper with the ENS registry.', async () => {
+    it('Does not allow anyone else to unwrap a name even if the owner has authorised the wrapper with the EVMNS registry.', async () => {
       await BaseRegistrar.register(labelHash, account, 1 * DAY)
       await BaseRegistrar.setApprovalForAll(NameWrapper.address, true)
       await EnsRegistry.setApprovalForAll(account2, true)
@@ -2237,7 +2237,7 @@ describe('Name Wrapper', () => {
             '0x01',
           )
       })
-      it('Does not allow anyone else to upgrade a name even if the owner has authorised the wrapper with the ENS registry.', async () => {
+      it('Does not allow anyone else to upgrade a name even if the owner has authorised the wrapper with the EVMNS registry.', async () => {
         await BaseRegistrar.register(labelHash, account, 1 * DAY)
         await BaseRegistrar.setApprovalForAll(NameWrapper.address, true)
         await EnsRegistry.setApprovalForAll(NameWrapper.address, true)
@@ -2532,7 +2532,7 @@ describe('Name Wrapper', () => {
           )
       })
 
-      it('Does not allow anyone else to upgrade a name even if the owner has authorised the wrapper with the ENS registry.', async () => {
+      it('Does not allow anyone else to upgrade a name even if the owner has authorised the wrapper with the EVMNS registry.', async () => {
         await EnsRegistry.setApprovalForAll(NameWrapper.address, true)
 
         await NameWrapper.wrap(encodeName('xyz'), account, EMPTY_ADDRESS)
@@ -4306,7 +4306,7 @@ describe('Name Wrapper', () => {
       await registerSetupAndWrapName(label, account, CANNOT_UNWRAP)
     })
 
-    it('Can be called by the owner of a name and sets this contract as owner on the ENS registry.', async () => {
+    it('Can be called by the owner of a name and sets this contract as owner on the EVMNS registry.', async () => {
       expect(await NameWrapper.ownerOf(wrappedTokenId)).to.equal(account)
       await EnsRegistry.setApprovalForAll(NameWrapper.address, true)
       await NameWrapper.setSubnodeOwner(
@@ -4381,7 +4381,7 @@ describe('Name Wrapper', () => {
         'ERC1155: newOwner cannot be the NameWrapper contract',
       )
     })
-    it('Does not allow anyone else to wrap a name even if the owner has authorised the wrapper with the ENS registry.', async () => {
+    it('Does not allow anyone else to wrap a name even if the owner has authorised the wrapper with the EVMNS registry.', async () => {
       expect(await NameWrapper.ownerOf(wrappedTokenId)).to.equal(account)
       await EnsRegistry.setApprovalForAll(account2, true)
       await expect(
@@ -4975,7 +4975,7 @@ describe('Name Wrapper', () => {
       )
     })
 
-    it('Does not allow anyone else to wrap a name even if the owner has authorised the wrapper with the ENS registry.', async () => {
+    it('Does not allow anyone else to wrap a name even if the owner has authorised the wrapper with the EVMNS registry.', async () => {
       expect(await NameWrapper.ownerOf(wrappedTokenId)).to.equal(account)
       await EnsRegistry.setApprovalForAll(account2, true)
       await expect(
@@ -5131,7 +5131,7 @@ describe('Name Wrapper', () => {
         )
     })
 
-    it('Sets the appropriate values on the ENS registry', async () => {
+    it('Sets the appropriate values on the EVMNS registry', async () => {
       await NameWrapper.setSubnodeRecord(
         wrappedTokenId,
         'sub',
@@ -5511,7 +5511,7 @@ describe('Name Wrapper', () => {
       await NameWrapper.setRecord(wrappedTokenId, account2, account, 50)
     })
 
-    it('Performs the appropriate function on the ENS registry and Wrapper', async () => {
+    it('Performs the appropriate function on the EVMNS registry and Wrapper', async () => {
       await NameWrapper.setRecord(wrappedTokenId, account2, account, 50)
 
       expect(await NameWrapper.ownerOf(wrappedTokenId)).to.equal(account2)
@@ -5618,7 +5618,7 @@ describe('Name Wrapper', () => {
       await NameWrapper.setResolver(wrappedTokenId, account2)
     })
 
-    it('Performs the appropriate function on the ENS registry.', async () => {
+    it('Performs the appropriate function on the EVMNS registry.', async () => {
       expect(await EnsRegistry.resolver(wrappedTokenId)).to.equal(EMPTY_ADDRESS)
       await NameWrapper.setResolver(wrappedTokenId, account2)
       expect(await EnsRegistry.resolver(wrappedTokenId)).to.equal(account2)
@@ -5659,7 +5659,7 @@ describe('Name Wrapper', () => {
       await NameWrapper.setTTL(wrappedTokenId, 100)
     })
 
-    it('Performs the appropriate function on the ENS registry.', async () => {
+    it('Performs the appropriate function on the EVMNS registry.', async () => {
       expect(await EnsRegistry.ttl(wrappedTokenId)).to.equal(EMPTY_ADDRESS)
       await NameWrapper.setTTL(wrappedTokenId, 100)
       expect(await EnsRegistry.ttl(wrappedTokenId)).to.equal(100)
@@ -5706,7 +5706,7 @@ describe('Name Wrapper', () => {
       expect(await BaseRegistrar.ownerOf(tokenId)).to.equal(NameWrapper.address)
     })
 
-    it('Reverts if called by anything other than the ENS registrar address', async () => {
+    it('Reverts if called by anything other than the EVMNS registrar address', async () => {
       await BaseRegistrar.register(tokenId, account, 1 * DAY)
 
       await expect(
@@ -5878,7 +5878,7 @@ describe('Name Wrapper', () => {
       ).to.equal(false)
     })
 
-    it('Sets the controller in the ENS registry to the wrapper contract', async () => {
+    it('Sets the controller in the EVMNS registry to the wrapper contract', async () => {
       await BaseRegistrar.register(tokenId, account, 1 * DAY)
 
       await BaseRegistrar['safeTransferFrom(address,address,uint256,bytes)'](

@@ -3,14 +3,16 @@ const sha3 = require('web3-utils').sha3
 
 const { exceptions } = require('../test-utils')
 
-let contracts = [[artifacts.require('./registry/ENSRegistry.sol'), 'Solidity']]
+let contracts = [
+  [artifacts.require('./registry/EVMNSRegistry.sol'), 'Solidity'],
+]
 
-contracts.forEach(function ([ENS, lang]) {
-  contract('ENS ' + lang, function (accounts) {
+contracts.forEach(function ([EVMNS, lang]) {
+  contract('EVMNS ' + lang, function (accounts) {
     let ens
 
     beforeEach(async () => {
-      ens = await ENS.new()
+      ens = await EVMNS.new()
     })
 
     it('should allow ownership transfers', async () => {

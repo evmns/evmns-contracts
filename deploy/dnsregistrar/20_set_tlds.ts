@@ -1259,7 +1259,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   let transactions: any[] = []
   const root = await ethers.getContract('Root', signer)
-  const registry = await ethers.getContract('ENSRegistry', signer)
+  const registry = await ethers.getContract('EVMNSRegistry', signer)
   transactions = await setTLDs(
     owner,
     registry,

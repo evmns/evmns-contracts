@@ -14,7 +14,7 @@ function getOpenSeaUrl(ethers: any, contract: string, namehashedname: string) {
 }
 
 task('seed', 'Creates test subbdomains and wraps them with Namewrapper')
-  .addPositionalParam('name', 'The ENS label to seed subdomains')
+  .addPositionalParam('name', 'The EVMNS label to seed subdomains')
   .setAction(async ({ name }, hre) => {
     let parsedFile
     try {
@@ -60,7 +60,7 @@ task('seed', 'Creates test subbdomains and wraps them with Namewrapper')
       name,
     })
     const EnsRegistry = await (
-      await ethers.getContractFactory('ENSRegistry')
+      await ethers.getContractFactory('EVMNSRegistry')
     ).attach(registryAddress)
     const BaseRegistrar = await (
       await ethers.getContractFactory('BaseRegistrarImplementation')
