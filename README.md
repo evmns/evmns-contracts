@@ -221,5 +221,4 @@ Here's an example in JavaScript:
      const reverseRegistrar = web3.eth.contract(reverseRegistrarABI).at(reverseRegistrarAddr);
      reverseRegistrar.setName(name, {from: web3.eth.accounts[0]}); // An operation must be performed using the Ethereum account of the domain owner
 
-
 Smart contract development tends to take a long release cycle. To prevent unnecessary dependency conflicts, please create a feature branch (`features/$BRNACH_NAME`) and raise a PR against the feature branch. The feature branch must be merged into master only after the smart contracts are deployed to the EVM mainnet.
