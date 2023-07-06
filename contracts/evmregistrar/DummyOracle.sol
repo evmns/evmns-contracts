@@ -1,3 +1,4 @@
+//SPDX-License-Identifier: MIT
 pragma solidity >=0.8.4;
 
 contract DummyOracle {
@@ -16,6 +17,10 @@ contract DummyOracle {
 
     function setOwner(address _owner) public onlyOwner {
         owner = _owner;
+    }
+
+    function getOwner() public view returns (address) {
+        return owner;
     }
 
     function set(int256 _value) public onlyOwner {
