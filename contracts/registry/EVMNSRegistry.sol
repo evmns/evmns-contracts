@@ -26,7 +26,7 @@ contract EVMNSRegistry is EVMNS {
     /**
      * @dev Constructs a new EVMNS registry.
      */
-    constructor() public {
+    constructor() {
         records[0x0].owner = msg.sender;
     }
 

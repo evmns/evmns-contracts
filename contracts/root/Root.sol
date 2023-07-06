@@ -16,7 +16,7 @@ contract Root is Ownable, Controllable {
     EVMNS public ens;
     mapping(bytes32 => bool) public locked;
 
-    constructor(EVMNS _evmns) public {
+    constructor(EVMNS _evmns) {
         ens = _evmns;
     }
 

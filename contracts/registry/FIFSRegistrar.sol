@@ -23,7 +23,7 @@ contract FIFSRegistrar {
      * @param ensAddr The address of the EVMNS registry.
      * @param node The node that this registrar administers.
      */
-    constructor(EVMNS ensAddr, bytes32 node) public {
+    constructor(EVMNS ensAddr, bytes32 node) {
         ens = ensAddr;
         rootNode = node;
     }

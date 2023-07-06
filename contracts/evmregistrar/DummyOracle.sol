@@ -5,7 +5,7 @@ contract DummyOracle {
     int256 value;
     address public owner;
 
-    constructor(int256 _value, address _owner) public {
+    constructor(int256 _value, address _owner) {
         owner = (_owner == address(0)) ? msg.sender : _owner;
         set(_value);
     }

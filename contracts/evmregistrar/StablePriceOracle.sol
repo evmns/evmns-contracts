@@ -102,10 +102,10 @@ contract StablePriceOracle is IPriceOracle {
         string calldata name,
         uint256 duration
     ) public view returns (IPriceOracle.Price memory) {
-        uint256 len = name.strlen();
         uint256 basePrice;
-
-        /*if (len >= 5) {
+        /*
+        uint256 len = name.strlen();
+        if (len >= 5) {
             basePrice = price5Letter * duration;
         } else if (len == 4) {
             basePrice = price5Letter * duration;

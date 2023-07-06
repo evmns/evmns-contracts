@@ -13,7 +13,7 @@ contract EVMNSRegistryWithFallback is EVMNSRegistry {
     /**
      * @dev Constructs a new EVMNS registrar.
      */
-    constructor(EVMNS _old) public EVMNSRegistry() {
+    constructor(EVMNS _old) EVMNSRegistry() {
         old = _old;
     }
 
