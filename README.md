@@ -153,6 +153,8 @@ cd evmns-contracts
 yarn
 ```
 
+Rename ".env.org" in the root directory to ".env".
+
 ### How to run tests
 
 ```
