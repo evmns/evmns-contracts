@@ -39,7 +39,7 @@ contract StablePriceOracle is IPriceOracle {
         string calldata name,
         uint256 expires,
         uint256 duration
-    ) external view override returns (IPriceOracle.Price memory) {
+    ) external view override returns (uint256) {
         if ((expires + 90 days) > block.timestamp) {
             return priceForRenew(name, duration);
         }
@@ -91,59 +91,16 @@ contract StablePriceOracle is IPriceOracle {
             }
         }
 
-        return
-            IPriceOracle.Price({
-                base: attoUSDToWei(basePrice),
-                premium: attoUSDToWei(0)
-            });
+        return attoUSDToWei(basePrice);
     }
 
     function priceForRenew(
         string calldata name,
         uint256 duration
-    ) public view returns (IPriceOracle.Price memory) {
+    ) public view returns (uint256) {
         uint256 basePrice;
-        /*
-        uint256 len = name.strlen();
-        if (len >= 5) {
-            basePrice = price5Letter * duration;
-        } else if (len == 4) {
-            basePrice = price5Letter * duration;
-        } else if (len == 3) {
-            basePrice = price5Letter * duration;
-        } else if (len == 2) {
-            basePrice = price5Letter * duration;
-        } else {
-            basePrice = price5Letter * duration;
-        }*/
         basePrice = price5Letter * duration;
-        return
-            IPriceOracle.Price({
-                base: attoUSDToWei(basePrice),
-                premium: attoUSDToWei(0)
-            });
-    }
-
-    /**
-     * @dev Returns the pricing premium in wei.
-     */
-    function premium(
-        string calldata name,
-        uint256 expires,
-        uint256 duration
-    ) external view returns (uint256) {
-        return attoUSDToWei(_premium(name, expires, duration));
-    }
-
-    /**
-     * @dev Returns the pricing premium in internal base units.
-     */
-    function _premium(
-        string memory name,
-        uint256 expires,
-        uint256 duration
-    ) internal view virtual returns (uint256) {
-        return 0;
+        return attoUSDToWei(basePrice);
     }
 
     function attoUSDToWei(uint256 amount) internal view returns (uint256) {

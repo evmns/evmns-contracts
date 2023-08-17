@@ -2,11 +2,6 @@
 pragma solidity >=0.8.17 <0.9.0;
 
 interface IPriceOracle {
-    struct Price {
-        uint256 base;
-        uint256 premium;
-    }
-
     /**
      * @dev Returns the price to register or renew a name.
      * @param name The name being registered or renewed.
@@ -18,5 +13,5 @@ interface IPriceOracle {
         string calldata name,
         uint256 expires,
         uint256 duration
-    ) external view returns (Price calldata);
+    ) external view returns (uint256);
 }

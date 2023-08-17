@@ -38,6 +38,12 @@ contract EVMRegistrarController is
     ERC20Recoverable,
     ReverseClaimer
 {
+    struct Emoji {
+        bool end;
+        uint8 length;
+        mapping(bytes1 => Emoji) nexts;
+    }
+
     using StringUtils for *;
     using Address for address;
 
@@ -59,12 +65,13 @@ contract EVMRegistrarController is
     bool allow12register = false;
     uint launchedtime = 0;
     address marketingController;
+    mapping(bytes1 => Emoji) emojilink;
+
     event NameRegistered(
         string name,
         bytes32 indexed label,
         address indexed owner,
         uint256 baseCost,
-        uint256 premium,
         uint256 expires
     );
     event NameRenewed(
@@ -101,6 +108,10 @@ contract EVMRegistrarController is
         launchedtime = _launchedtime;
     }
 
+    function namelen(string memory name) public view returns (uint) {
+        return name.strlen();
+    }
+
     function transferMarketingController(address controller) public onlyOwner {
         marketingController = controller;
     }
@@ -115,19 +126,43 @@ contract EVMRegistrarController is
         _;
     }
 
+    function addEmojis(bytes[] calldata _emojis) public onlyOwner {
+        for (uint i = 0; i < _emojis.length; i++) {
+            //emojis.push(_emojis[i]);
+            if (emojilink[bytes1(_emojis[i][0])].length == 0) {
+                emojilink[bytes1(_emojis[i][0])].length = 1;
+                emojilink[bytes1(_emojis[i][0])].end = false;
+            }
+            Emoji storage currentNode = emojilink[bytes1(_emojis[i][0])];
+            for (uint8 j = 1; j < _emojis[i].length; j++) {
+                if (currentNode.nexts[_emojis[i][j]].length == 0) {
+                    currentNode.nexts[_emojis[i][j]].length = j + 1;
+                    if (j == _emojis[i].length - 1) {
+                        currentNode.nexts[_emojis[i][j]].end = true;
+                    } else {
+                        currentNode.nexts[_emojis[i][j]].end = false;
+                    }
+                } else {
+                    if (j == _emojis[i].length - 1) {
+                        currentNode.nexts[_emojis[i][j]].end = true;
+                    }
+                }
+                currentNode = currentNode.nexts[_emojis[i][j]];
+            }
+        }
+    }
+
     function rentPrice(
         string memory name,
         uint256 duration
-    ) public view override returns (IPriceOracle.Price memory price) {
+    ) public view override returns (uint256 price) {
         bytes32 label = keccak256(bytes(name));
         price = prices.price(name, base.nameExpires(uint256(label)), duration);
     }
 
     function valid(string memory name) public pure returns (bool) {
         return
-            name.strlen() >= 3 &&
-            !hasChineseChar(name) &&
-            !hasZeroWidthChar(name);
+            name.strlen() >= 3 && name.strlen() <= 250 && !hasInvalidChar(name);
     }
 
     function available(string memory name) public view override returns (bool) {
@@ -139,15 +174,23 @@ contract EVMRegistrarController is
             }
         }
         bytes32 label = keccak256(bytes(name));
-        return valid(name) && base.available(uint256(label));
+        return
+            valid(name) &&
+            !hasZeroWidthChar(name) &&
+            base.available(uint256(label));
     }
 
-    function hasChineseChar(string memory str) public pure returns (bool) {
+    //chineseChar and dot
+    function hasInvalidChar(string memory str) public pure returns (bool) {
         bytes memory byteArray = bytes(str);
         uint len = byteArray.length;
         uint i = 0;
         while (i < len) {
             uint c = uint(uint8(byteArray[i]));
+            //has dot
+            if (c == 0x2e) {
+                return true;
+            }
             if (c < 0x80) {
                 i += 1;
             } else if (c < 0xe0) {
@@ -167,24 +210,6 @@ contract EVMRegistrarController is
         return false;
     }
 
-    /*function hasZeroWidthChar(string memory name) public pure returns (bool) {
-        bytes memory strBytes = bytes(name);
-        uint len = strBytes.length;
-        uint i = 0;
-        while (i < len) {
-            if (strBytes[i] == bytes1(0xE3) && i + 2 < len) {
-                bytes2 char2 = bytes2((strBytes[i + 1] << 8) | strBytes[i + 2]);
-                if (char2 == 0x200B || char2 == 0x200C || char2 == 0xFEFF) {
-                    return true;
-                }
-                i += 3;
-            } else {
-                i += 1;
-            }
-        }
-        return false;
-    }*/
-
     function hasZeroWidthChar(string memory input) public pure returns (bool) {
         bytes memory nb = bytes(input);
         // zero width for /u200b /u200c /u200d and U+FEFF
@@ -203,6 +228,67 @@ contract EVMRegistrarController is
             }
         }
         return false;
+    }
+
+    function hasZeroWidthEmoji(string memory input) public view returns (bool) {
+        bytes memory nb = bytes(input);
+        // zero width for /u200b /u200c /u200d and U+FEFF
+        if (nb.length < 10) {
+            for (uint256 i; i < nb.length - 2; i++) {
+                if (bytes1(nb[i]) == 0xe2 && bytes1(nb[i + 1]) == 0x80) {
+                    if (
+                        bytes1(nb[i + 2]) == 0x8b ||
+                        bytes1(nb[i + 2]) == 0x8c ||
+                        bytes1(nb[i + 2]) == 0x8d
+                    ) {
+                        return true;
+                    }
+                } else if (bytes1(nb[i]) == 0xef) {
+                    if (bytes1(nb[i + 1]) == 0xbb && bytes1(nb[i + 2]) == 0xbf)
+                        return true;
+                }
+            }
+            return false;
+        } else {
+            for (uint256 i; i < nb.length - 2; i++) {
+                if (bytes1(nb[i]) == 0xe2 && bytes1(nb[i + 1]) == 0x80) {
+                    if (
+                        bytes1(nb[i + 2]) == 0x8b ||
+                        bytes1(nb[i + 2]) == 0x8c ||
+                        bytes1(nb[i + 2]) == 0x8d
+                    ) {
+                        return true;
+                    }
+                } else if (bytes1(nb[i]) == 0xef) {
+                    if (bytes1(nb[i + 1]) == 0xbb && bytes1(nb[i + 2]) == 0xbf)
+                        return true;
+                }
+                if (i > nb.length - 10) {
+                    continue;
+                }
+                uint8 findLength = 0;
+
+                Emoji storage currentNode = emojilink[nb[i]];
+
+                if (currentNode.length == 0) continue;
+
+                for (uint256 ei = i + 1; ei < nb.length; ei++) {
+                    bytes1 key = nb[ei];
+                    currentNode = currentNode.nexts[key];
+                    if (currentNode.length > 0) {
+                        if (currentNode.end) {
+                            findLength = currentNode.length;
+                        }
+                    } else {
+                        break;
+                    }
+                }
+                if (findLength > 0) {
+                    i = i + findLength - 1;
+                }
+            }
+            return false;
+        }
     }
 
     function makeCommitment(
@@ -259,11 +345,13 @@ contract EVMRegistrarController is
             }
         }
 
-        IPriceOracle.Price memory price = rentPrice(name, duration);
-        if (msg.value < price.base + price.premium) {
+        uint256 price = rentPrice(name, duration);
+        if (msg.value < price && price > 0) {
             revert InsufficientValue();
         }
-
+        if (!available(name)) {
+            revert NameNotAvailable(name);
+        }
         _consumeCommitment(
             name,
             duration,
@@ -299,33 +387,114 @@ contract EVMRegistrarController is
             name,
             keccak256(bytes(name)),
             nameOwner,
-            price.base,
-            price.premium,
+            price,
             expires
         );
 
-        if (msg.value > (price.base + price.premium)) {
-            payable(msg.sender).transfer(
-                msg.value - (price.base + price.premium)
-            );
+        if (msg.value > price) {
+            payable(msg.sender).transfer(msg.value - price);
         }
-        payable(marketingController).transfer(
-            ((price.base + price.premium) * 35) / 100
+        payable(marketingController).transfer((price * 35) / 100);
+        payable(owner()).transfer(address(this).balance);
+    }
+
+    function availableWithEmoji(string memory name) public view returns (bool) {
+        if (!allow12register) {
+            if (
+                block.timestamp > launchedtime + 180 days && name.strlen() == 12
+            ) {
+                return false;
+            }
+        }
+        bytes32 label = keccak256(bytes(name));
+        return
+            valid(name) &&
+            !hasZeroWidthEmoji(name) &&
+            base.available(uint256(label));
+    }
+
+    function registerWithEmoji(
+        string calldata name,
+        address nameOwner,
+        uint256 duration,
+        bytes32 secret,
+        address resolver,
+        bytes[] calldata data,
+        bool reverseRecord,
+        uint16 ownerControlledFuses
+    ) public payable {
+        if (!allow12register) {
+            if (block.timestamp > launchedtime + 180 days) {
+                allow12register = true;
+            } else if (name.strlen() == 12) {
+                revert("12 words is locked");
+            }
+        }
+
+        uint256 price = rentPrice(name, duration);
+        if (msg.value < price && price > 0) {
+            revert InsufficientValue();
+        }
+        if (!availableWithEmoji(name)) {
+            revert NameNotAvailable(name);
+        }
+        _consumeCommitment(
+            name,
+            duration,
+            makeCommitment(
+                name,
+                nameOwner,
+                duration,
+                secret,
+                resolver,
+                data,
+                reverseRecord,
+                ownerControlledFuses
+            )
         );
+
+        uint256 expires = nameWrapper.registerAndWrapETH2LD(
+            name,
+            nameOwner,
+            duration,
+            resolver,
+            ownerControlledFuses
+        );
+
+        if (data.length > 0) {
+            _setRecords(resolver, keccak256(bytes(name)), data);
+        }
+
+        if (reverseRecord) {
+            _setReverseRecord(name, resolver, msg.sender);
+        }
+
+        emit NameRegistered(
+            name,
+            keccak256(bytes(name)),
+            nameOwner,
+            price,
+            expires
+        );
+
+        if (msg.value > price) {
+            payable(msg.sender).transfer(msg.value - price);
+        }
+        payable(marketingController).transfer((price * 35) / 100);
         payable(owner()).transfer(address(this).balance);
     }
 
     function renew(string calldata name, uint256 duration) external payable {
         bytes32 labelhash = keccak256(bytes(name));
         uint256 tokenId = uint256(labelhash);
-        IPriceOracle.Price memory price = rentPrice(name, duration);
-        if (msg.value < price.base) {
+        uint256 price = rentPrice(name, duration);
+        if (msg.value < price) {
             revert InsufficientValue();
         }
         uint256 expires = nameWrapper.renew(tokenId, duration);
 
-        if (msg.value > price.base) {
-            payable(msg.sender).transfer(msg.value - price.base);
+        if (msg.value > price) {
+            payable(msg.sender).transfer(msg.value - price);
         }
 
         emit NameRenewed(name, labelhash, msg.value, expires);
@@ -358,9 +527,6 @@ contract EVMRegistrarController is
         // If the commitment is too old, or the name is registered, stop
         if (commitments[commitment] + maxCommitmentAge <= block.timestamp) {
             revert CommitmentTooOld(commitment);
-        }
-        if (!available(name)) {
-            revert NameNotAvailable(name);
         }
 
         delete (commitments[commitment]);

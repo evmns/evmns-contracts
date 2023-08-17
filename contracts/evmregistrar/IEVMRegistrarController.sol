@@ -4,10 +4,7 @@ pragma solidity ~0.8.17;
 import "./IPriceOracle.sol";
 
 interface IEVMRegistrarController {
-    function rentPrice(
-        string memory,
-        uint256
-    ) external view returns (IPriceOracle.Price memory);
+    function rentPrice(string memory, uint256) external view returns (uint256);
 
     function available(string memory) external returns (bool);
 

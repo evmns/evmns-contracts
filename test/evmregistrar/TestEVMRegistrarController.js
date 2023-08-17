@@ -209,13 +209,12 @@ contract('EVMRegistrarController', function () {
         sha3(name),
         registrantAccount,
         REGISTRATION_TIME,
-        0,
         block.timestamp + REGISTRATION_TIME,
       )
 
     expect(
       (await web3.eth.getBalance(controller.address)) - balanceBefore,
-    ).to.equal(REGISTRATION_TIME)
+    ).to.equal(0)
   })
 
   it('should revert when not enough ether is transferred', async () => {
@@ -269,13 +268,12 @@ contract('EVMRegistrarController', function () {
         sha3('newconfigname'),
         registrantAccount,
         REGISTRATION_TIME,
-        0,
         block.timestamp + REGISTRATION_TIME,
       )
 
     expect(
       (await web3.eth.getBalance(controller.address)) - balanceBefore,
-    ).to.equal(REGISTRATION_TIME)
+    ).to.equal(0)
 
     var nodehash = namehash('newconfigname.evm')
     expect(await ens.resolver(nodehash)).to.equal(resolver.address)
@@ -506,7 +504,6 @@ contract('EVMRegistrarController', function () {
         sha3('newconfigname2'),
         registrantAccount,
         REGISTRATION_TIME,
-        0,
         block.timestamp + REGISTRATION_TIME,
       )
 
@@ -515,7 +512,7 @@ contract('EVMRegistrarController', function () {
     expect(await resolver['addr(bytes32)'](nodehash)).to.equal(NULL_ADDRESS)
     expect(
       (await web3.eth.getBalance(controller.address)) - balanceBefore,
-    ).to.equal(REGISTRATION_TIME)
+    ).to.equal(0)
   })
 
   it('should include the owner in the commitment', async () => {
@@ -622,7 +619,7 @@ contract('EVMRegistrarController', function () {
     var expires = await baseRegistrar.nameExpires(sha3('newname'))
     var balanceBefore = await web3.eth.getBalance(controller.address)
     const duration = 86400
-    const [price] = await controller.rentPrice(sha3('newname'), duration)
+    const price = await controller.rentPrice(sha3('newname'), duration)
     await controller.renew('newname', duration, { value: price })
     var newExpires = await baseRegistrar.nameExpires(sha3('newname'))
     var newFuseExpiry = (await nameWrapper.getData(nodehash))[2]
@@ -645,7 +642,7 @@ contract('EVMRegistrarController', function () {
     var expires = await baseRegistrar.nameExpires(sha3('newname'))
     var balanceBefore = await web3.eth.getBalance(controller.address)
     const duration = 86400
-    const [price] = await controller.rentPrice(sha3('newname'), duration)
+    const price = await controller.rentPrice(sha3('newname'), duration)
     await controller2.renew('newname', duration, { value: price })
     var newExpires = await baseRegistrar.nameExpires(sha3('newname'))
     const [, newFuses, newFuseExpiry] = await nameWrapper.getData(nodehash)
@@ -670,7 +667,7 @@ contract('EVMRegistrarController', function () {
 
     var expires = await baseRegistrar.nameExpires(tokenId)
     const duration = 86400
-    const [price] = await controller.rentPrice(tokenId, duration)
+    const price = await controller.rentPrice(tokenId, duration)
     await controller.renew(label, duration, { value: price })
 
     expect(await baseRegistrar.ownerOf(tokenId)).to.equal(ownerAccount)

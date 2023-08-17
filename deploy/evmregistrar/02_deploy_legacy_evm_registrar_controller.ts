@@ -13,7 +13,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     'BaseRegistrarImplementation',
     owner,
   )
-  const priceOracle = await ethers.getContract('ExponentialPremiumPriceOracle')
+  const priceOracle = await ethers.getContract('StablePriceOracle')
   const reverseRegistrar = await ethers.getContract('ReverseRegistrar', owner)
 
   await deploy('LegacyEVMRegistrarController', {

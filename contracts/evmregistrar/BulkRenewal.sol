@@ -38,13 +38,10 @@ contract BulkRenewal is IBulkRenewal {
         EVMRegistrarController controller = getController();
         uint256 length = names.length;
         for (uint256 i = 0; i < length; ) {
-            IPriceOracle.Price memory price = controller.rentPrice(
-                names[i],
-                duration
-            );
+            uint256 price = controller.rentPrice(names[i], duration);
             unchecked {
                 ++i;
-                total += (price.base + price.premium);
+                total += price;
             }
         }
     }
@@ -57,15 +54,11 @@ contract BulkRenewal is IBulkRenewal {
         uint256 length = names.length;
         uint256 total;
         for (uint256 i = 0; i < length; ) {
-            IPriceOracle.Price memory price = controller.rentPrice(
-                names[i],
-                duration
-            );
-            uint256 totalPrice = price.base + price.premium;
-            controller.renew{value: totalPrice}(names[i], duration);
+            uint256 price = controller.rentPrice(names[i], duration);
+            controller.renew{value: price}(names[i], duration);
             unchecked {
                 ++i;
-                total += totalPrice;
+                total += price;
             }
         }
         // Send any excess funds back

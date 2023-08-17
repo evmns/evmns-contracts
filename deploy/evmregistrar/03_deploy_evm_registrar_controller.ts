@@ -2,6 +2,7 @@ import { Interface } from 'ethers/lib/utils'
 import { ethers } from 'hardhat'
 import { DeployFunction } from 'hardhat-deploy/types'
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
+import { emojilist } from '../../scripts/utils/emoji220'
 
 const { makeInterfaceId } = require('@openzeppelin/test-helpers')
 
@@ -21,10 +22,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     'BaseRegistrarImplementation',
     owner,
   )
-  const priceOracle = await ethers.getContract(
-    'ExponentialPremiumPriceOracle',
-    owner,
-  )
+  const priceOracle = await ethers.getContract('StablePriceOracle', owner)
   const reverseRegistrar = await ethers.getContract('ReverseRegistrar', owner)
   const nameWrapper = await ethers.getContract('NameWrapper', owner)
 
@@ -36,7 +34,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     args: [
       registrar.address,
       priceOracle.address,
-      5,
+      1,
       259200,
       reverseRegistrar.address,
       nameWrapper.address,
@@ -98,10 +96,11 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
       ensAddress: (await ethers.getContract('EVMNSRegistry')).address,
     },
   )
+
   const resolver = await provider.getResolver('evm')
   if (resolver === null) {
     console.log(
-      'No resolver set for .eth; not setting interface for ETH Registrar Controller',
+      'No resolver set for .evm; not setting interface for ETH Registrar Controller',
     )
     return
   }
@@ -118,13 +117,17 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     `Setting EVMRegistrarController interface ID ${interfaceId} on .eth resolver (tx: ${tx3.hash})...`,
   )
   await tx3.wait()
+
+  /*  for (const emoji of emojis){
+
+  }*/
 }
 
-func.tags = ['ethregistrar', 'EVMRegistrarController']
+func.tags = ['evmregistrar', 'EVMRegistrarController']
 func.dependencies = [
   'EVMNSRegistry',
   'BaseRegistrarImplementation',
-  'ExponentialPremiumPriceOracle',
+  'StablePriceOracle',
   'ReverseRegistrar',
   'NameWrapper',
 ]

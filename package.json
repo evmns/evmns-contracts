@@ -1,7 +1,7 @@
 {
   "name": "@ensdomains/ens-contracts",
   "version": "0.0.20",
-  "description": "EVMNS contracts",
+  "description": "ENS contracts",
   "scripts": {
     "test": "hardhat test",
     "test:local": "hardhat --network localhost test",
@@ -50,7 +50,6 @@
     "prettier": "^2.6.2",
     "prettier-plugin-solidity": "^1.0.0-beta.24",
     "rfc4648": "^1.5.0",
-    "solidity-coverage": "^0.8.2",
     "ts-node": "^10.8.1",
     "typescript": "^4.7.3"
   },
@@ -64,6 +63,7 @@
     "@ensdomains/eth-ens-namehash": "^2.0.15",
     "@ensdomains/solsha1": "0.0.3",
     "@openzeppelin/contracts": "^4.1.0",
+    "axios": "^1.4.0",
     "dns-packet": "^5.3.0",
     "js-sha3": "^0.8.0"
   },

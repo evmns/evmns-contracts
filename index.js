@@ -3,12 +3,10 @@ const BulkRenewal = require('./build/contracts/StaticBulkRenewal')
 const EVMNS = require('./build/contracts/EVMNS')
 const EVMNSRegistry = require('./build/contracts/EVMNSRegistry')
 const EVMNSRegistryWithFallback = require('./build/contracts/EVMNSRegistryWithFallback')
-const ExponentialPremiumPriceOracle = require('./build/contracts/ExponentialPremiumPriceOracle')
 const EVMRegistrarController = require('./build/contracts/EVMRegistrarController')
 const FIFSRegistrar = require('./build/contracts/FIFSRegistrar')
 const IBaseRegistrar = require('./build/contracts/IBaseRegistrar')
 const IPriceOracle = require('./build/contracts/IPriceOracle')
-const LinearPremiumPriceOracle = require('./build/contracts/LinearPremiumPriceOracle')
 const PublicResolver = require('./build/contracts/PublicResolver')
 const Resolver = require('./build/contracts/Resolver')
 const ReverseRegistrar = require('./build/contracts/ReverseRegistrar')
@@ -32,12 +30,10 @@ module.exports = {
   EVMNS,
   EVMNSRegistry,
   EVMNSRegistryWithFallback,
-  ExponentialPremiumPriceOracle,
   EVMRegistrarController,
   FIFSRegistrar,
   IBaseRegistrar,
   IPriceOracle,
-  LinearPremiumPriceOracle,
   PublicResolver,
   Resolver,
   ReverseRegistrar,

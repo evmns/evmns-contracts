@@ -21,18 +21,10 @@ contract('StablePriceOracle', function (accounts) {
   })
 
   it('should return correct prices', async () => {
-    expect(parseInt((await priceOracle.price('foo', 0, 3600)).base)).to.equal(
-      1440,
-    )
-    expect(parseInt((await priceOracle.price('quux', 0, 3600)).base)).to.equal(
-      720,
-    )
-    expect(parseInt((await priceOracle.price('fubar', 0, 3600)).base)).to.equal(
-      360,
-    )
-    expect(
-      parseInt((await priceOracle.price('foobie', 0, 3600)).base),
-    ).to.equal(360)
+    expect(parseInt(await priceOracle.price('foo', 0, 3600))).to.equal(1440)
+    expect(parseInt(await priceOracle.price('quux', 0, 3600))).to.equal(720)
+    expect(parseInt(await priceOracle.price('fubar', 0, 3600))).to.equal(360)
+    expect(parseInt(await priceOracle.price('foobie', 0, 3600))).to.equal(360)
   })
 
   it('should work with larger values', async () => {
@@ -48,7 +40,7 @@ contract('StablePriceOracle', function (accounts) {
       2,
       1,
     ])
-    expect((await priceOracle2.price('foo', 0, 86400))[0].toString()).to.equal(
+    expect((await priceOracle2.price('foo', 0, 86400)).toString()).to.equal(
       '8640000000000000000000',
     )
   })
