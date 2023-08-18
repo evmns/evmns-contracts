@@ -169,6 +169,15 @@ yarn pub
 
 ### Release flow
 
+### Notes:
+
+If you encounter any issues during runtime, please try the following:
+
+1. Delete the following folders from the root directory: artifacts, build, cache, deployments, node_modules.
+2. Configure BATCH_GATEWAY_URLS=["https://api-testnet2.trust.one"] in the .env file.
+3. Run yarn install and yarn test again.
+4. Ensure that your node version is greater than 16.20.0.
+
 ### How to use
 
 #### Registering Domains
