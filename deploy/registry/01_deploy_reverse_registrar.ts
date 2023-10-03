@@ -32,15 +32,21 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   if (network.name === 'mainnet') return
 
   const root = await ethers.getContract('Root')
+  let rootOwnerNew = ''
+  if (network.name != 'localhost' && network.name != 'hardhat') {
+    rootOwnerNew = process.env.ROOT_OWNER ?? ''
+  } else {
+    rootOwnerNew = deployer
+  }
 
   const tx1 = await root
-    .connect(await ethers.getSigner(owner))
-    .setSubnodeOwner('0x' + keccak256('reverse'), owner)
+    .connect(await ethers.getSigner(rootOwnerNew))
+    .setSubnodeOwner('0x' + keccak256('reverse'), rootOwnerNew)
   console.log(`Setting owner of .reverse to owner on root (tx: ${tx1.hash})...`)
   await tx1.wait()
 
   const tx2 = await registry
-    .connect(await ethers.getSigner(owner))
+    .connect(await ethers.getSigner(rootOwnerNew))
     .setSubnodeOwner(
       namehash('reverse'),
       '0x' + keccak256('addr'),

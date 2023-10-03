@@ -15,7 +15,6 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const registry = await ethers.getContract('EVMNSRegistry')
   const root = await ethers.getContract('Root')
-
   const deployArgs = {
     from: deployer,
     args: [registry.address, namehash.hash('evm')],
@@ -33,8 +32,15 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   )
   await tx1.wait()
 
+  let rootOwnerNew = ''
+  if (network.name != 'localhost' && network.name != 'hardhat') {
+    rootOwnerNew = process.env.ROOT_OWNER ?? ''
+  } else {
+    rootOwnerNew = deployer
+  }
+
   const tx2 = await root
-    .connect(await ethers.getSigner(owner))
+    .connect(await ethers.getSigner(rootOwnerNew))
     .setSubnodeOwner('0x' + keccak256('evm'), registrar.address)
   console.log(
     `Setting owner of evm node to registrar on root (tx: ${tx2.hash})...`,

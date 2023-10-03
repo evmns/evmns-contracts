@@ -1254,6 +1254,8 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { getNamedAccounts, network } = hre
   const { owner } = await getNamedAccounts()
 
+  //todo 旧合约不部署
+  return
   const registrar = await ethers.getContract('DNSRegistrar')
   const signer = await ethers.getSigner(owner)
 

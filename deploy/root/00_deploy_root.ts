@@ -13,15 +13,14 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   if (!network.tags.use_root) {
     return true
   }
-
   const registry = await ethers.getContract('EVMNSRegistry')
 
-  await deploy('Root', {
+  const rootDep = await deploy('Root', {
     from: deployer,
     args: [registry.address],
     log: true,
   })
-
+  if (!rootDep.newlyDeployed) return
   const root = await ethers.getContract('Root')
 
   const tx1 = await registry.setOwner(ZERO_HASH, root.address)
@@ -29,23 +28,28 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     `Setting owner of root node to root contract (tx: ${tx1.hash})...`,
   )
   await tx1.wait()
-
+  let rootOwnerNew = ''
+  if (network.name != 'localhost' && network.name != 'hardhat') {
+    rootOwnerNew = process.env.ROOT_OWNER ?? ''
+  } else {
+    rootOwnerNew = deployer
+  }
   const rootOwner = await root.owner()
-
   switch (rootOwner) {
     case deployer:
       const tx2 = await root
         .connect(await ethers.getSigner(deployer))
-        .transferOwnership(owner)
+        .transferOwnership(rootOwnerNew)
       console.log(
         `Transferring root ownership to final owner (tx: ${tx2.hash})...`,
       )
       await tx2.wait()
-    case owner:
-      if (!(await root.controllers(owner))) {
+
+    case rootOwnerNew:
+      if (!(await root.controllers(rootOwnerNew))) {
         const tx2 = await root
-          .connect(await ethers.getSigner(owner))
-          .setController(owner, true)
+          .connect(await ethers.getSigner(rootOwnerNew))
+          .setController(rootOwnerNew, true)
         console.log(
           `Setting final owner as controller on root contract (tx: ${tx2.hash})...`,
         )

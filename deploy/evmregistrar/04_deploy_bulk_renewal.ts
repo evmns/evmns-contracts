@@ -24,7 +24,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     args: [controller.address],
     log: true,
   })
-
+  if (!bulkRenewal.newlyDeployed) return
   // Only attempt to make resolver etc changes directly on testnets
   if (network.name === 'mainnet') return
 

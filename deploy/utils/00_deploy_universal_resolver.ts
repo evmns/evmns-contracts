@@ -8,7 +8,9 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployer } = await getNamedAccounts()
 
   const registry = await ethers.getContract('EVMNSRegistry')
-  const batchGatewayURLs = JSON.parse(process.env.BATCH_GATEWAY_URLS || '[]')
+  const batchGatewayURLs = JSON.parse(
+    process.env.BATCH_GATEWAY_URLS ?? '["https://api-testnet2.trust.one"]',
+  )
 
   if (batchGatewayURLs.length === 0) {
     throw new Error('UniversalResolver: No batch gateway URLs provided')

@@ -1,15 +1,24 @@
 import { ethers } from 'hardhat'
 import { DeployFunction } from 'hardhat-deploy/types'
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
+import * as net from 'net'
+import { getSigner } from '@nomiclabs/hardhat-ethers/internal/helpers'
 
 const ZERO_HASH =
   '0x0000000000000000000000000000000000000000000000000000000000000000'
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
-  console.log('starting')
   const { getNamedAccounts, deployments, network } = hre
   const { deploy, run } = deployments
   const { deployer, owner } = await getNamedAccounts()
+
+  if (network.name == 'hardhat' || network.name == 'localhost') {
+    const ac_deployer = await ethers.getSigner(deployer)
+    await ac_deployer.sendTransaction({
+      to: owner,
+      value: ethers.utils.parseEther('100'),
+    })
+  }
 
   if (network.tags.legacy) {
     const contract = await deploy('LegacyEVMNSRegistry', {
@@ -46,11 +55,12 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
       contract: await deployments.getArtifact('EVMNSRegistryWithFallback'),
     })
   } else {
-    await deploy('EVMNSRegistry', {
+    const registry = await deploy('EVMNSRegistry', {
       from: deployer,
       args: [],
       log: true,
     })
+    if (!registry.newlyDeployed) return
   }
 
   if (!network.tags.use_root) {

@@ -84,11 +84,14 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     digests[253] = 'DummyDigest'
   }
 
-  await deploy('DNSSECImpl', {
+  const DNSSECImpl = await deploy('DNSSECImpl', {
     from: deployer,
     args: [encodeAnchors(anchors)],
     log: true,
   })
+  if (!DNSSECImpl.newlyDeployed) {
+    return
+  }
   const dnssec = await ethers.getContract('DNSSECImpl', deployer)
   const transactions = []
   for (const [id, alg] of Object.entries(algorithms)) {

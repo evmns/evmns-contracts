@@ -14,7 +14,7 @@ function computeInterfaceId(iface: Interface) {
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { getNamedAccounts, deployments, network } = hre
   const { deploy } = deployments
-  const { deployer, owner } = await getNamedAccounts()
+  let { deployer, owner } = await getNamedAccounts()
 
   const registry = await ethers.getContract('EVMNSRegistry', owner)
   const registrar = await ethers.getContract(

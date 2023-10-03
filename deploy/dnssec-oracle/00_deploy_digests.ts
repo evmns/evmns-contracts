@@ -6,12 +6,14 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deploy } = deployments
   const { deployer } = await getNamedAccounts()
 
-  await deploy('SHA1Digest', {
+  const SHA1Digest = await deploy('SHA1Digest', {
     from: deployer,
     args: [],
     log: true,
   })
-
+  if (!SHA1Digest.newlyDeployed) {
+    return
+  }
   await deploy('SHA256Digest', {
     from: deployer,
     args: [],

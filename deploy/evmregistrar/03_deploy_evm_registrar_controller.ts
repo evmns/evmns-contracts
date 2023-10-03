@@ -23,23 +23,32 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     owner,
   )
   const priceOracle = await ethers.getContract('StablePriceOracle', owner)
+  const emojiUtils = await ethers.getContract('EmojiUtils', owner)
+
   const reverseRegistrar = await ethers.getContract('ReverseRegistrar', owner)
   const nameWrapper = await ethers.getContract('NameWrapper', owner)
 
-  const launcheddate = new Date('2023/04/01 00:00:00')
+  const launcheddate = new Date('2023/09/15 15:00:00')
   const launchedtime = Math.floor(launcheddate.getTime() / 1000)
+  const allow12registertime = Math.floor(
+    new Date('2023-12-31T23:59:59Z').getTime() / 1000,
+  )
+  const earningAccount = process.env.EARNING_ACCOUNT
 
   const deployArgs = {
     from: deployer,
     args: [
       registrar.address,
       priceOracle.address,
+      emojiUtils.address,
       1,
-      259200,
+      86400,
       reverseRegistrar.address,
       nameWrapper.address,
       registry.address,
       launchedtime,
+      allow12registertime,
+      earningAccount,
     ],
     log: true,
   }
@@ -48,18 +57,6 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   if (owner !== deployer) {
     const c = await ethers.getContract('EVMRegistrarController', deployer)
-    const tx = await c.transferOwnership(owner)
-    console.log(
-      `Transferring ownership of EVMRegistrarController to ${owner} (tx: ${tx.hash})...`,
-    )
-    await tx.wait()
-  }
-
-  if (owner !== deployer) {
-    const c = await ethers.getContract(
-      'ActivitiesRegistrarController',
-      deployer,
-    )
     const tx = await c.transferOwnership(owner)
     console.log(
       `Transferring ownership of EVMRegistrarController to ${owner} (tx: ${tx.hash})...`,
@@ -130,6 +127,7 @@ func.dependencies = [
   'StablePriceOracle',
   'ReverseRegistrar',
   'NameWrapper',
+  'EmojiUtils',
 ]
 
 export default func

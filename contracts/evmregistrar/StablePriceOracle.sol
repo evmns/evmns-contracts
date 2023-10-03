@@ -40,9 +40,9 @@ contract StablePriceOracle is IPriceOracle {
         uint256 expires,
         uint256 duration
     ) external view override returns (uint256) {
-        if ((expires + 90 days) > block.timestamp) {
+        /*        if ((expires + 90 days) > block.timestamp) {
             return priceForRenew(name, duration);
-        }
+        }*/
 
         uint256 len = name.strlen();
         uint256 basePrice;
@@ -50,58 +50,26 @@ contract StablePriceOracle is IPriceOracle {
         if (len >= 5) {
             basePrice = price5Letter * duration;
         } else if (len == 4) {
-            if (duration >= 365 days) {
-                basePrice =
-                    price4Letter *
-                    365 days +
-                    price5Letter *
-                    (duration - 365 days);
-            } else {
-                basePrice = price4Letter * duration;
-            }
+            basePrice = price4Letter * duration;
         } else if (len == 3) {
-            if (duration >= 365 days) {
-                basePrice =
-                    price3Letter *
-                    365 days +
-                    price5Letter *
-                    (duration - 365 days);
-            } else {
-                basePrice = price3Letter * duration;
-            }
+            basePrice = price3Letter * duration;
         } else if (len == 2) {
-            if (duration >= 365 days) {
-                basePrice =
-                    price2Letter *
-                    365 days +
-                    price5Letter *
-                    (duration - 365 days);
-            } else {
-                basePrice = price2Letter * duration;
-            }
+            basePrice = price2Letter * duration;
         } else {
-            if (duration >= 365 days) {
-                basePrice =
-                    price1Letter *
-                    365 days +
-                    price5Letter *
-                    (duration - 365 days);
-            } else {
-                basePrice = price1Letter * duration;
-            }
+            basePrice = price1Letter * duration;
         }
 
         return attoUSDToWei(basePrice);
     }
 
-    function priceForRenew(
+    /*    function priceForRenew(
         string calldata name,
         uint256 duration
     ) public view returns (uint256) {
         uint256 basePrice;
         basePrice = price5Letter * duration;
         return attoUSDToWei(basePrice);
-    }
+    }*/
 
     function attoUSDToWei(uint256 amount) internal view returns (uint256) {
         uint256 ethPrice = uint256(usdOracle.latestAnswer());

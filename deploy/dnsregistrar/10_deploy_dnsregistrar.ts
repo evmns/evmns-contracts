@@ -3,7 +3,7 @@ import { DeployFunction } from 'hardhat-deploy/types'
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
-  const { getNamedAccounts, deployments } = hre
+  const { getNamedAccounts, deployments, network } = hre
   const { deploy } = deployments
   const { deployer, owner } = await getNamedAccounts()
 
@@ -18,6 +18,9 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     args: [],
     log: true,
   })
+  if (!publicSuffixList.newlyDeployed) {
+    return
+  }
   const tx = await deploy('DNSRegistrar', {
     from: deployer,
     args: [
@@ -30,9 +33,14 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     log: true,
   })
   console.log(`Deployed DNSRegistrar to ${tx.address}`)
-
+  let rootOwnerNew = ''
+  if (network.name != 'localhost' && network.name != 'hardhat') {
+    rootOwnerNew = process.env.ROOT_OWNER ?? ''
+  } else {
+    rootOwnerNew = deployer
+  }
   const tx2 = await root
-    .connect(await ethers.getSigner(owner))
+    .connect(await ethers.getSigner(rootOwnerNew))
     .setController(tx.address, true)
   console.log(`Set DNSRegistrar as controller of Root (${tx2.hash})`)
 }
