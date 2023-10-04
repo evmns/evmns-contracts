@@ -1,7 +1,7 @@
 {
-  "name": "@ensdomains/ens-contracts",
+  "name": "EVMNS-contracts",
   "version": "0.0.20",
-  "description": "ENS contracts",
+  "description": "EVMNS contracts",
   "scripts": {
     "test": "hardhat test",
     "test:local": "hardhat --network localhost test",
@@ -11,8 +11,7 @@
     "format": "prettier --write .",
     "prepublishOnly": "yarn build",
     "pub": "yarn publish --access public",
-    "prepare": "husky install",
-    "testa": "rd /s /q artifacts && rd /s /q build && rd /s /q cache && del /q /f deployments\\evm\\ActivitiesRegistrarController.json && hardhat deploy --network evm"
+    "prepare": "husky install"
   },
   "files": [
     "build",
@@ -70,14 +69,7 @@
   "directories": {
     "test": "test"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ensdomains/ens-contracts.git"
-  },
   "author": "",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/ensdomains/ens-contracts/issues"
-  },
-  "homepage": "https://github.com/ensdomains/ens-contracts#readme"
+  "homepage": "https://app.evmns.space"
 }
