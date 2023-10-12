@@ -117,16 +117,22 @@ contract('EVMRegistrarController', function () {
     )
     const launcheddate = new Date('2023/04/01 00:00:00')
     const launchedtime = Math.floor(launcheddate.getTime() / 1000)
+    const allow12registertime = Math.floor(
+      new Date('2023-12-31T23:59:59Z').getTime() / 1000,
+    )
     controller = await deploy(
       'EVMRegistrarController',
       baseRegistrar.address,
       priceOracle.address,
+      ZERO_ADDRESS,
       60,
       86400,
       reverseRegistrar.address,
       nameWrapper.address,
       ens.address,
       launchedtime,
+      allow12registertime,
+      ownerAccount,
     )
     controller2 = controller.connect(signers[1])
     await nameWrapper.setController(controller.address, true)
@@ -170,21 +176,21 @@ contract('EVMRegistrarController', function () {
     five5: true,
     four: true,
     iii: true,
-    ii: false,
-    i: false,
+    ii: true,
+    i: true,
     '': false,
 
     // { ni } { hao } { ma } (chinese; simplified)
     你好吗: false,
 
     // { ta } { ko } (japanese; hiragana)
-    たこ: false,
+    たこ: true,
 
     // { poop } { poop } { poop } (emoji)
     '\ud83d\udca9\ud83d\udca9\ud83d\udca9': true,
 
     // { poop } { poop } (emoji)
-    '\ud83d\udca9\ud83d\udca9': false,
+    '\ud83d\udca9\ud83d\udca9': true,
   }
 
   it('should report label validity', async () => {
@@ -208,6 +214,7 @@ contract('EVMRegistrarController', function () {
         name,
         sha3(name),
         registrantAccount,
+        REGISTRATION_TIME,
         REGISTRATION_TIME,
         block.timestamp + REGISTRATION_TIME,
       )
@@ -267,6 +274,7 @@ contract('EVMRegistrarController', function () {
         'newconfigname',
         sha3('newconfigname'),
         registrantAccount,
+        REGISTRATION_TIME,
         REGISTRATION_TIME,
         block.timestamp + REGISTRATION_TIME,
       )
@@ -503,6 +511,7 @@ contract('EVMRegistrarController', function () {
         'newconfigname2',
         sha3('newconfigname2'),
         registrantAccount,
+        REGISTRATION_TIME,
         REGISTRATION_TIME,
         block.timestamp + REGISTRATION_TIME,
       )

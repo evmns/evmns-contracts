@@ -104,7 +104,7 @@ describe('Name Wrapper', () => {
 
     MetaDataservice = await deploy(
       'StaticMetadataService',
-      'https://ens.domains',
+      'https://metadata.evmns.space/',
     )
 
     //setup reverse registrar
@@ -6573,7 +6573,9 @@ describe('Name Wrapper', () => {
 
   describe('MetadataService', () => {
     it('uri() returns url', async () => {
-      expect(await NameWrapper.uri(123)).to.equal('https://ens.domains')
+      expect(await NameWrapper.uri(123)).to.equal(
+        'https://metadata.evmns.space/123',
+      )
     })
 
     it('owner can set a new MetadataService', async () => {

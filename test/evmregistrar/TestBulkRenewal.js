@@ -73,15 +73,21 @@ contract('BulkRenewal', function (accounts) {
     )
     const launcheddate = new Date('2023/04/01 00:00:00')
     const launchedtime = Math.floor(launcheddate.getTime() / 1000)
+    const allow12registertime = Math.floor(
+      new Date('2023-12-31T23:59:59Z').getTime() / 1000,
+    )
     controller = await EVMRegistrarController.new(
       baseRegistrar.address,
       priceOracle.address,
+      EMPTY_ADDRESS,
       60,
       86400,
       EMPTY_ADDRESS,
       nameWrapper.address,
       ens.address,
       launchedtime,
+      allow12registertime,
+      ownerAccount,
       { from: ownerAccount },
     )
     var wrapperAddress = await controller.nameWrapper()
